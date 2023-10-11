@@ -17,7 +17,7 @@
     breaks = NULL, breaks.method = "het", assembly = "hg19",
     weighted.mean = TRUE, normalization.method = "mean",
     ignore.normal = FALSE, parallel = 1, gc.stats = NULL,
-    segments.samples = FALSE)
+    segments.samples = FALSE,...)
 
   sequenza.fit(sequenza.extract, female = TRUE, N.ratio.filter = 10,
                N.BAF.filter = 1, segment.filter = 3e6,
@@ -74,6 +74,7 @@
   \item{sample.id}{identifier of the sample, to be used as a prefix for saved objects.}
   \item{out.dir}{output directory where the files and objects will be saved.}
   \item{mc.cores}{legacy argument to set the number of cores, but it refers to the \code{cl} of \code{\link{pblapply}}. It uses \code{\link{mclapply}} when set to an integer.}
+  \item{...}{other arguments for aspcf and pcf functions. Take advantage of it to run the analysis on alternative genomes with the argument cytoband_file, as described in https://github.com/pbousquets/copynumber}
 
 }
 
