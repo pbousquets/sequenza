@@ -6,7 +6,7 @@ sequenza.extract <- function(file, window = 1e6, overlap = 1,
     breaks = NULL, breaks.method = "het", assembly = "hg19",
     weighted.mean = TRUE, normalization.method = "mean",
     ignore.normal = FALSE, parallel = 1, gc.stats = NULL,
-    segments.samples = FALSE){
+    segments.samples = FALSE,...){
 
     if (is.null(gc.stats)) {
         gc.stats <- gc.sample.stats(file, verbose = verbose,
@@ -81,14 +81,14 @@ sequenza.extract <- function(file, window = 1e6, overlap = 1,
                                   adjusted.ratio = norm_normal_depth,
                                   singsAsFactors = FALSE),
                 gamma = gamma.pcf, kmin = kmin.pcf, assembly = assembly,
-                breaks.het = NULL)
+                breaks.het = NULL,...)
             breaks_tumor_chr <- breaks_full(
                data = data.frame(chromosome = seqz.data$chromosome,
                                  position = seqz.data$position,
                                  adjusted.ratio = norm_tumor_depth,
                                  singsAsFactors = FALSE),
                gamma = gamma.pcf, kmin = kmin.pcf, assembly = assembly,
-               breaks.het = NULL)
+               breaks.het = NULL,...)
         } else {
            breaks_normal_chr <- NULL
            breaks_tumor_chr <- NULL
@@ -150,7 +150,7 @@ sequenza.extract <- function(file, window = 1e6, overlap = 1,
                 gamma = gamma, kmin = kmin, breaks = breaks_chr,
                 gamma.pcf = gamma.pcf, kmin.pcf = kmin.pcf,
                 assembly = assembly, chromosome = chr,
-                method = breaks.method)
+                method = breaks.method,...)
         } else {
             if (breaks.method == "full") {
                 breaks_chr <- extract_breaks(data = seqz.data,
@@ -158,7 +158,7 @@ sequenza.extract <- function(file, window = 1e6, overlap = 1,
                     gamma = gamma, kmin = kmin,
                     gamma.pcf = gamma.pcf, kmin.pcf = kmin.pcf,
                     assembly = assembly, chromosome = chr,
-                    method = breaks.method)
+                    method = breaks.method,...)
             }
         }
         if (class(breaks_chr) == "try-error") {

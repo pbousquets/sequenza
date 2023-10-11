@@ -1,6 +1,6 @@
 extract_breaks <- function(data, data_het, ratio, baf, breaks, gamma, kmin,
     gamma.pcf, kmin.pcf, assembly, chromosome,
-    method = c("het", "full", "fast")) {
+    method = c("het", "full", "fast"), ...) {
     method_list <- c("het", "full", "fast")
     if (is.null(breaks)) {
         if (method %in% method_list) {
@@ -9,11 +9,11 @@ extract_breaks <- function(data, data_het, ratio, baf, breaks, gamma, kmin,
                     gamma = gamma, kmin = kmin, chr = chromosome)
             } else {
                 breaks <- breaks_het(data = data_het, gamma = gamma,
-                    kmin = kmin, assembly = assembly)
+                    kmin = kmin, assembly = assembly,...)
             }
             if (method == "full") {
                 breaks <- breaks_full(data = data, gamma = gamma.pcf,
-                    kmin = kmin.pcf, assembly, breaks.het = breaks)
+                    kmin = kmin.pcf, assembly, breaks.het = breaks,...)
             }
         } else {
             stop("Available methods are \'full\', \'het\' and \'fast\'.")
@@ -26,12 +26,12 @@ extract_breaks <- function(data, data_het, ratio, baf, breaks, gamma, kmin,
 breaks_het <- function(data, gamma, kmin, assembly){
     try(
         find.breaks(data, gamma = gamma, assembly = assembly,
-            kmin = kmin, baf.thres = c(0, 0.5)),
+            kmin = kmin, baf.thres = c(0, 0.5), ...),
     silent = FALSE)
 }
 
 breaks_full <- function(data, gamma, kmin,
-    assembly, breaks.het = NULL) {
+    assembly, breaks.het = NULL, ...) {
     merge.breaks <- function (breaks, breaks.het) {
         merged.breaks <- unique(sort(c(breaks$start.pos,
             breaks$end.pos, breaks.het$start.pos, breaks.het$end.pos)))
@@ -43,7 +43,7 @@ breaks_full <- function(data, gamma, kmin,
             end.pos = merged.breaks[-1])
     }
     breaks <- find.breaks(data, gamma = gamma, kmin = kmin,
-        assembly = assembly, seg.algo = "pcf")
+        assembly = assembly, seg.algo = "pcf", ...)
     if (!is.null(breaks.het)) {
         chr.p <- merge.breaks(breaks[breaks$arm == "p", ],
             breaks.het[breaks.het$arm == "p", ])
